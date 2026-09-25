@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <title>Admin – HFU IT-Support</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* ── CSS Variablen ──────────────────────────────── */
+    :root {
+      --sm-orange:       #f18700;
+      --sm-orange-dark:  #d97800;
+      --sm-orange-light: #fff3e0;
+      --sm-blue:         #1b3a6b;
+      --sm-text:         #2d2d2d;
+      --sm-text-2:       #5f5f5f;
+      --sm-text-3:       #9a9a9a;
+      --sm-border:       #e8e4df;
+      --sm-bg:           #f5f3f0;
+      --sm-card:         #ffffff;
+      --sm-danger:       #c0392b;
+      --sm-danger-light: #fdecea;
+      --sm-success:      #27ae60;
+      --sm-success-light:#e8f5e9;
+      --sm-font:         'Segoe UI', sans-serif;
+      --sm-radius:       8px;
+      --sm-shadow:       0 2px 12px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sm-font); background: var(--sm-bg); color: var(--sm-text); font-size: 14px; }
+
+    /* ── Layout ─────────────────────────────────────── */
+    .adm-layout { display: flex; min-height: 100vh; }
+
+    /* ── Sidebar ────────────────────────────────────── */
+    .adm-sidebar {
+      width: 240px;
+      background: var(--sm-blue);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    .adm-logo {
+      padding: 20px 18px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .adm-logo-icon {
+      width: 36px; height: 36px;
+      background: var(--sm-orange);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: white;
+    }
+    .adm-logo-text { font-size: 14px; font-weight: 700; line-height: 1.3; }
+    .adm-logo-sub  { font-size: 10px; opacity: 0.6; }
+
+    .adm-nav { padding: 12px 10px; flex: 1; }
+    .adm-nav-section {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      opacity: 0.45;
+      padding: 12px 8px 4px;
+    }
+    .adm-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
+      transition: background 0.15s, color 0.15s;
+      margin-bottom: 2px;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      font-family: var(--sm-font);
+    }
+    .adm-nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
+    .adm-nav-item.active { background: var(--sm-orange); color: white; }
+    .adm-nav-item i { width: 18px; text-align: center; font-size: 14px; }
+
+    .adm-sidebar-footer {
+      padding: 14px 18px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      font-size: 11px;
+      opacity: 0.5;
+    }
+
+    /* ── Main ───────────────────────────────────────── */
+    .adm-main {
+      flex: 1;
+      margin-left: 240px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Topbar ─────────────────────────────────────── */
+    .adm-topbar {
+      background: var(--sm-card);
+      border-bottom: 1px solid var(--sm-border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .adm-topbar-title { font-size: 17px; font-weight: 700; color: var(--sm-text); }
+    .adm-topbar-right { display: flex; gap: 10px; align-items: center; }
+
+    /* ── Content ────────────────────────────────────── */
+    .adm-content { padding: 24px; flex: 1; }
+
+    /* ── Section Pages ──────────────────────────────── */
+    .adm-section { display: none; }
+    .adm-section.active { display: block; }
+
+    /* ── Cards ──────────────────────────────────────── */
+    .adm-card {
+      background: var(--sm-card);
+      border: 1px solid var(--sm-border);
+      border-radius: var(--sm-radius);
+      box-shadow: var(--sm-shadow);
+      margin-bottom: 20px;
+    }
+    .adm-card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--sm-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .adm-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--sm-text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .adm-card-title i { color: var(--sm-orange); }
+    .adm-card-body { padding: 20px; }
+
+    /* ── Buttons ────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-family: var(--sm-font);
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+    .btn-primary   { background: var(--sm-orange); color: white; }
+    .btn-primary:hover { background: var(--sm-orange-dark); color: white; text-decoration: none; }
+    .btn-secondary { background: var(--sm-card); color: var(--sm-text); border: 1px solid var(--sm-border); }
+    .btn-secondary:hover { background: var(--sm-bg); }
+    .btn-danger    { background: var(--sm-danger); color: white; }
+    .btn-danger:hover { background: #a93226; }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+    .btn-icon { padding: 6px 8px; }
+
+    /* ── Tabelle ────────────────────────────────────── */
+    .adm-table { width: 100%; border-collapse: collapse; }
+    .adm-table th {
+      background: var(--sm-bg);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--sm-text-3);
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--sm-border);
+    }
+    .adm-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--sm-border);
+      font-size: 13px;
+      vertical-align: middle;
+    }
+    .adm-table tr:last-child td { border-bottom: none; }
+    .adm-table tr:hover td { background: var(--sm-bg); }
+    .adm-table-actions { display: flex; gap: 6px; }
+
+    /* ── Badge ──────────────────────────────────────── */
+    .badge {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+    .badge-Wichtig { background:#FDE7E9; color:#A4262C; }
+    .badge-Info    { background:#fff3e0; color:#f18700; }
+    .badge-Wartung { background:#FFF4CE; color:#7A5100; }
+    .badge-Neu     { background:#e6f7e6; color:#107C10; }
+
+    /* ── Form ───────────────────────────────────────── */
+    .form-group { margin-bottom: 16px; }
+    .form-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--sm-text-2);
+      margin-bottom: 5px;
+    }
+    .form-label .req { color: var(--sm-orange); margin-left: 2px; }
+    .form-control {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--sm-border);
+      border-radius: 6px;
+      font-family: var(--sm-font);
+      font-size: 13px;
+      color: var(--sm-text);
+      background: var(--sm-card);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .form-control:focus { border-color: var(--sm-orange); box-shadow: 0 0 0 2px rgba(241,135,0,0.15); }
+    textarea.form-control { resize: vertical; min-height: 80px; }
+    select.form-control { cursor: pointer; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 640px) { .form-row { grid-template-columns: 1fr; } }
+    .form-hint { font-size: 11px; color: var(--sm-text-3); margin-top: 4px; }
+
+    /* ── Modal ──────────────────────────────────────── */
+    .adm-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .adm-modal-overlay.open { display: flex; }
+    .adm-modal {
+      background: var(--sm-card);
+      border-radius: var(--sm-radius);
+      max-width: 760px;
+      width: 100%;
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+    }
+    .adm-modal-head {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--sm-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      background: var(--sm-card);
+      z-index: 2;
+    }
+    .adm-modal-head h3 { font-size: 17px; font-weight: 700; }
+    .adm-modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--sm-text-3);
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    .adm-modal-close:hover { background: var(--sm-bg); color: var(--sm-text); }
+    .adm-modal-body { padding: 20px 22px; flex: 1; }
+    .adm-modal-foot {
+      padding: 14px 22px;
+      border-top: 1px solid var(--sm-border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      position: sticky;
+      bottom: 0;
+      background: var(--sm-card);
+      z-index: 2;
+    }
+
+    /* ── Block Editor ───────────────────────────────── */
+    .block-editor {
+      border: 1px solid var(--sm-border);
+      border-radius: var(--sm-radius);
+      overflow: hidden;
+    }
+    .block-editor-toolbar {
+      background: var(--sm-bg);
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--sm-border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .block-editor-toolbar-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--sm-text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-right: 4px;
+    }
+    .block-add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 11px;
+      border: 1px solid var(--sm-border);
+      border-radius: 5px;
+      background: white;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--sm-font);
+      color: var(--sm-text-2);
+      transition: all 0.15s;
+    }
+    .block-add-btn:hover { border-color: var(--sm-orange); color: var(--sm-orange); background: var(--sm-orange-light); }
+
+    .block-list { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+    .block-item {
+      background: var(--sm-bg);
+      border: 1px solid var(--sm-border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .block-item-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: white;
+      border-bottom: 1px solid var(--sm-border);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--sm-text-2);
+    }
+    .block-item-head i { color: var(--sm-orange); }
+    .block-item-actions { margin-left: auto; display: flex; gap: 4px; }
+    .block-move-btn, .block-del-btn {
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 3px 6px;
+      border-radius: 3px;
+      font-size: 12px;
+      color: var(--sm-text-3);
+    }
+    .block-move-btn:hover { background: var(--sm-border); color: var(--sm-text); }
+    .block-del-btn:hover  { background: var(--sm-danger-light); color: var(--sm-danger); }
+
+    .block-item-body { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+
+    /* Schritte-Editor */
+    .steps-list-editor { display: flex; flex-direction: column; gap: 6px; }
+    .step-editor-row {
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+      background: white;
+      border: 1px solid var(--sm-border);
+      border-radius: 5px;
+      padding: 8px 10px;
+    }
+    .step-editor-num {
+      min-width: 22px;
+      height: 22px;
+      background: var(--sm-orange);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-editor-fields { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .step-del-btn {
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: var(--sm-text-3);
+      font-size: 13px;
+      padding: 2px 4px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .step-del-btn:hover { background: var(--sm-danger-light); color: var(--sm-danger); }
+
+    /* ── Toast ──────────────────────────────────────── */
+    .adm-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--sm-text);
+      color: white;
+      padding: 12px 20px;
+      border-radius: var(--sm-radius);
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .adm-toast.show { transform: translateY(0); opacity: 1; }
+    .adm-toast.success { background: var(--sm-success); }
+    .adm-toast.error   { background: var(--sm-danger); }
+
+    /* ── Stats Cards ────────────────────────────────── */
+    .adm-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .adm-stat-card {
+      background: var(--sm-card);
+      border: 1px solid var(--sm-border);
+      border-radius: var(--sm-radius);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      box-shadow: var(--sm-shadow);
+    }
+    .adm-stat-icon { font-size: 22px; color: var(--sm-orange); }
+    .adm-stat-num  { font-size: 26px; font-weight: 800; color: var(--sm-text); }
+    .adm-stat-label { font-size: 11px; color: var(--sm-text-3); }
+
+    /* Kein Eintrag */
+    .adm-empty {
+      text-align: center;
+      padding: 32px;
+      color: var(--sm-text-3);
+      font-size: 13px;
+    }
+    .adm-empty i { font-size: 28px; display: block; margin-bottom: 8px; }
+
+    /* ── Login Overlay ──────────────────────────────── */
+    #admLoginOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(27, 58, 107, 0.96);
+      backdrop-filter: blur(10px);
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .adm-login-card {
+      background: white;
+      border-radius: 12px;
+      max-width: 420px;
+      width: 100%;
+      padding: 36px 30px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+      text-align: center;
+      position: relative;
+    }
+    .adm-login-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--sm-orange-light);
+      color: var(--sm-orange);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 16px;
+      box-shadow: 0 4px 14px rgba(241, 135, 0, 0.2);
+    }
+    .adm-login-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--sm-text);
+      margin-bottom: 6px;
+    }
+    .adm-login-sub {
+      font-size: 13px;
+      color: var(--sm-text-2);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .adm-login-error {
+      background: var(--sm-danger-light);
+      color: var(--sm-danger);
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .adm-login-input-wrap {
+      position: relative;
+      margin-bottom: 18px;
+    }
+    .adm-login-input-wrap input {
+      width: 100%;
+      padding: 12px 42px 12px 14px;
+      border: 1.5px solid var(--sm-border);
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: var(--sm-font);
+      outline: none;
+      transition: all 0.2s;
+    }
+    .adm-login-input-wrap input:focus {
+      border-color: var(--sm-orange);
+      box-shadow: 0 0 0 3px rgba(241, 135, 0, 0.18);
+    }
+    .adm-login-input-wrap .toggle-pwd {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--sm-text-3);
+      font-size: 16px;
+    }
+    .adm-login-submit {
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      justify-content: center;
+      border-radius: 8px;
+    }
+    .adm-login-back {
+      display: inline-block;
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--sm-text-3);
+      text-decoration: none;
+    }
+    .adm-login-back:hover { color: var(--sm-orange); text-decoration: underline; }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    .shake { animation: shake 0.4s ease; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ LOGIN OVERLAY ════════════════════════════════ -->
+<div id="admLoginOverlay">
+  <div class="adm-login-card">
+    <div class="adm-login-icon"><i class="fa-solid fa-lock"></i></div>
+    <div class="adm-login-title">HFU Admin-Zugang</div>
+    <div class="adm-login-sub">Dieser Bereich ist geschützt. Bitte gib das Admin-Passwort ein, um fortzufahren.</div>
+    <div class="adm-login-error" id="adminLoginError">Falsches Passwort! Bitte erneut versuchen.</div>
+    <form onsubmit="doAdminLogin(event)">
+      <div class="adm-login-input-wrap">
+        <input type="password" id="adminLoginInput" placeholder="Admin-Passwort eingeben..." required autocomplete="current-password">
+        <button type="button" class="toggle-pwd" onclick="toggleLoginPwdVisibility()"><i class="fa-solid fa-eye" id="loginEyeIcon"></i></button>
+      </div>
+      <button type="submit" class="btn btn-primary adm-login-submit">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> Anmelden
+      </button>
+    </form>
+    <a href="index.html" class="adm-login-back"><i class="fa-solid fa-arrow-left"></i> Zurück zum IT-Support Portal</a>
+  </div>
+</div>
+
+<div class="adm-layout">
+
+  <!-- ═══ SIDEBAR ══════════════════════════════════════ -->
+  <nav class="adm-sidebar">
+    <div class="adm-logo">
+      <div class="adm-logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <div>
+        <div class="adm-logo-text">HFU Admin</div>
+        <div class="adm-logo-sub">IT-Support Portal</div>
+      </div>
+    </div>
+
+    <div class="adm-nav">
+      <div class="adm-nav-section">Übersicht</div>
+      <button class="adm-nav-item active" onclick="showSection('secDashboard', this)">
+        <i class="fa-solid fa-chart-pie"></i> <span>Dashboard</span>
+      </button>
+
+      <div class="adm-nav-section">Inhalt</div>
+      <button class="adm-nav-item" onclick="showSection('secNews', this)">
+        <i class="fa-solid fa-newspaper"></i> <span>News</span>
+      </button>
+      <button class="adm-nav-item" onclick="showSection('secGuides', this)">
+        <i class="fa-solid fa-book-open"></i> <span>Anleitungen</span>
+      </button>
+      <button class="adm-nav-item" onclick="showSection('secGuideCategories', this)">
+        <i class="fa-solid fa-tags"></i> <span>Kategorien</span>
+      </button>
+      <button class="adm-nav-item" onclick="showSection('secTools', this)">
+        <i class="fa-solid fa-screwdriver-wrench"></i> <span>Tools</span>
+      </button>
+      <button class="adm-nav-item" onclick="showSection('secForms', this)">
+        <i class="fa-solid fa-file-signature"></i> <span>Formulare</span>
+      </button>
+      <button class="adm-nav-item" onclick="showSection('secLinks', this)">
+        <i class="fa-solid fa-link"></i> <span>Weitere Links</span>
+      </button>
+      <button class="adm-nav-item" onclick="showSection('secTeam', this)">
+        <i class="fa-solid fa-users"></i> <span>Team</span>
+      </button>
+
+      <div class="adm-nav-section">System</div>
+      <button class="adm-nav-item" onclick="showSection('secSettings', this)">
+        <i class="fa-solid fa-gear"></i> <span>Einstellungen</span>
+      </button>
+    </div>
+
+    <div class="adm-sidebar-footer">Version 7.0 · HFU</div>
+  </nav>
+
+  <!-- ═══ MAIN ══════════════════════════════════════════ -->
+  <div class="adm-main">
+
+    <!-- Topbar -->
+    <div class="adm-topbar">
+      <div class="adm-topbar-title" id="topbarTitle">Dashboard</div>
+      <div class="adm-topbar-right">
+        <a href="index.html" target="_blank" class="btn btn-secondary btn-sm">
+          <i class="fa-solid fa-eye"></i> Portal ansehen
+        </a>
+        <button class="btn btn-secondary btn-sm" onclick="logoutAdmin()">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Abmelden
+        </button>
+      </div>
+    </div>
+
+    <div class="adm-content">
+
+      <!-- ─── DASHBOARD ────────────────────────────── -->
+      <div class="adm-section active" id="secDashboard">
+        <div class="adm-stats" id="dashStats"></div>
+        <div class="adm-card">
+          <div class="adm-card-header"><div class="adm-card-title"><i class="fa-solid fa-clock-rotate-left"></i> Schnellzugriff</div></div>
+          <div class="adm-card-body" style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="btn btn-primary" onclick="showSection('secNews',null);openNewsModal()">
+              <i class="fa-solid fa-plus"></i> News erstellen
+            </button>
+            <button class="btn btn-primary" onclick="showSection('secGuides',null);openGuideModal()">
+              <i class="fa-solid fa-plus"></i> Anleitung erstellen
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── NEWS ─────────────────────────────────── -->
+      <div class="adm-section" id="secNews">
+        <div class="adm-card">
+          <div class="adm-card-header">
+            <div class="adm-card-title"><i class="fa-solid fa-newspaper"></i> News-Meldungen</div>
+            <button class="btn btn-primary btn-sm" onclick="openNewsModal()"><i class="fa-solid fa-plus"></i> Neue Meldung</button>
+          </div>
+          <div class="adm-card-body" style="padding:0">
+            <table class="adm-table" id="newsTable">
+              <thead><tr><th>Titel</th><th>Typ</th><th>Datum</th><th>Aktionen</th></tr></thead>
+              <tbody id="newsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── ANLEITUNGEN ──────────────────────────── -->
+      <div class="adm-section" id="secGuides">
+        <div class="adm-card">
+          <div class="adm-card-header">
+            <div class="adm-card-title"><i class="fa-solid fa-book-open"></i> Anleitungen</div>
+            <button class="btn btn-primary btn-sm" onclick="openGuideModal()"><i class="fa-solid fa-plus"></i> Neue Anleitung</button>
+          </div>
+          <div class="adm-card-body" style="padding:0">
+            <table class="adm-table">
+              <thead><tr><th>Titel</th><th>Kategorie</th><th>Blöcke</th><th>Aktionen</th></tr></thead>
+              <tbody id="guidesTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── KATEGORIEN ───────────────────────────── -->
+      <div class="adm-section" id="secGuideCategories">
+        <div class="adm-card">
+          <div class="adm-card-header">
+            <div class="adm-card-title"><i class="fa-solid fa-tags"></i> Anleitungs-Kategorien</div>
+            <button class="btn btn-primary btn-sm" onclick="openCatModal()"><i class="fa-solid fa-plus"></i> Kategorie hinzufügen</button>
+          </div>
+          <div class="adm-card-body" style="padding:0">
+            <table class="adm-table">
+              <thead><tr><th>Icon</th><th>Name</th><th>Typ</th><th>Aktionen</th></tr></thead>
+              <tbody id="catsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── TOOLS ─────────────────────────────────── -->
+      <div class="adm-section" id="secTools">
+        <div class="adm-card">
+          <div class="adm-card-header">
+            <div class="adm-card-title"><i class="fa-solid fa-screwdriver-wrench"></i> Tools</div>
+            <button class="btn btn-primary btn-sm" onclick="openToolModal()"><i class="fa-solid fa-plus"></i> Tool hinzufügen</button>
+          </div>
+          <div class="adm-card-body" style="padding:0">
+            <table class="adm-table">
+              <thead><tr><th>Name</th><th>URL</th><th>Aktionen</th></tr></thead>
+              <tbody id="toolsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── FORMULARE ─────────────────────────────── -->
+      <div class="adm-section" id="secForms">
+        <div class="adm-card">
+          <div class="adm-card-header">
+            <div class="adm-card-title"><i class="fa-solid fa-file-signature"></i> Formulare</div>
+            <button class="btn btn-primary btn-sm" onclick="openFormModal()"><i class="fa-solid fa-plus"></i> Formular hinzufügen</button>
+          </div>
+          <div class="adm-card-body" style="padding:0">
+            <table class="adm-table">
+              <thead><tr><th>Name</th><th>URL</th><th>Aktionen</th></tr></thead>
+              <tbody id="formsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── WEITERE LINKS ─────────────────────────── -->
+      <div class="adm-section" id="secLinks">
+        <div class="adm-card">
+          <div class="adm-card-header">
+            <div class="adm-card-title"><i class="fa-solid fa-link"></i> Weitere Links</div>
+            <button class="btn btn-primary btn-sm" onclick="openLinkModal()"><i class="fa-solid fa-plus"></i> Link hinzufügen</button>
+          </div>
+          <div class="adm-card-body" style="padding:0">
+            <table class="adm-table">
+              <thead><tr><th>Name</th><th>URL</th><th>Aktionen</th></tr></thead>
+              <tbody id="linksTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── TEAM ──────────────────────────────────── -->
+      <div class="adm-section" id="secTeam">
+        <div class="adm-card">
+          <div class="adm-card-header">
+            <div class="adm-card-title"><i class="fa-solid fa-users"></i> Team-Mitglieder</div>
+            <button class="btn btn-primary btn-sm" onclick="openTeamModal()"><i class="fa-solid fa-plus"></i> Mitglied hinzufügen</button>
+          </div>
+          <div class="adm-card-body" style="padding:0">
+            <table class="adm-table">
+              <thead><tr><th>Name</th><th>Rolle</th><th>Foto</th><th>Aktionen</th></tr></thead>
+              <tbody id="teamTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── EINSTELLUNGEN ─────────────────────────── -->
+      <div class="adm-section" id="secSettings">
+        <div class="adm-card">
+          <div class="adm-card-header"><div class="adm-card-title"><i class="fa-solid fa-gear"></i> Einstellungen</div></div>
+          <div class="adm-card-body" style="display:flex;flex-direction:column;gap:12px">
+            <p style="font-size:13px;color:var(--sm-text-2)">Alle Inhalte werden im Browser (localStorage) gespeichert und sind sofort im Portal verfügbar.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn-secondary" onclick="exportData()"><i class="fa-solid fa-download"></i> Daten exportieren (JSON)</button>
+              <label class="btn btn-secondary" style="cursor:pointer">
+                <i class="fa-solid fa-upload"></i> Daten importieren
+                <input type="file" accept=".json" style="display:none" onchange="importData(event)">
+              </label>
+              <button class="btn btn-danger" onclick="resetData()"><i class="fa-solid fa-rotate-left"></i> Auf Standard zurücksetzen</button>
+            </div>
+          </div>
+        <div class="adm-card">
+          <div class="adm-card-header"><div class="adm-card-title"><i class="fa-solid fa-key"></i> Admin-Passwort ändern</div></div>
+          <div class="adm-card-body" style="max-width: 460px;">
+            <p style="font-size:13px;color:var(--sm-text-2);margin-bottom:16px">Hier kannst du das Passwort für den Zugang zu dieser Admin-Seite ändern.</p>
+            <div class="form-group">
+              <label class="form-label">Aktuelles Passwort <span class="req">*</span></label>
+              <input type="password" class="form-control" id="pwdCurrent" placeholder="Bisheriges Passwort">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Neues Passwort <span class="req">*</span></label>
+              <input type="password" class="form-control" id="pwdNew" placeholder="Mindestens 6 Zeichen">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Neues Passwort bestätigen <span class="req">*</span></label>
+              <input type="password" class="form-control" id="pwdConfirm" placeholder="Neues Passwort wiederholen">
+            </div>
+            <button class="btn btn-primary" onclick="changeAdminPassword()"><i class="fa-solid fa-floppy-disk"></i> Neues Passwort speichern</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /adm-content -->
+  </div><!-- /adm-main -->
+</div><!-- /adm-layout -->
+
+<!-- ═══ MODALS ══════════════════════════════════════════ -->
+
+<!-- News Modal -->
+<div class="adm-modal-overlay" id="newsModal">
+  <div class="adm-modal" style="max-width:520px">
+    <div class="adm-modal-head">
+      <h3 id="newsModalTitle">News erstellen</h3>
+      <button class="adm-modal-close" onclick="closeModal('newsModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="newsId">
+      <div class="form-group">
+        <label class="form-label">Titel <span class="req">*</span></label>
+        <input type="text" class="form-control" id="newsTitle" placeholder="z.B. Passbolt ist aktiv">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Typ</label>
+          <select class="form-control" id="newsBadge">
+            <option value="Neu">Neu</option>
+            <option value="Wichtig">Wichtig</option>
+            <option value="Info">Info</option>
+            <option value="Wartung">Wartung</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Datum</label>
+          <input type="text" class="form-control" id="newsDate" placeholder="z.B. 25.09.2026">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Inhalt <span class="req">*</span></label>
+        <textarea class="form-control" id="newsContent" rows="4" placeholder="Beschreibungstext der Meldung..."></textarea>
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('newsModal')">Abbrechen</button>
+      <button class="btn btn-primary" onclick="saveNews()"><i class="fa-solid fa-floppy-disk"></i> Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Guide Modal -->
+<div class="adm-modal-overlay" id="guideModal">
+  <div class="adm-modal">
+    <div class="adm-modal-head">
+      <h3 id="guideModalTitle">Anleitung erstellen</h3>
+      <button class="adm-modal-close" onclick="closeModal('guideModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="guideId">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Titel <span class="req">*</span></label>
+          <input type="text" class="form-control" id="guideTitle" placeholder="z.B. VPN-Probleme lösen">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Kategorie</label>
+          <select class="form-control" id="guideCategoryId"></select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Kurzbeschreibung</label>
+        <textarea class="form-control" id="guideDesc" rows="2" placeholder="Was wird in dieser Anleitung erklärt?"></textarea>
+      </div>
+
+      <!-- Block Editor -->
+      <div class="form-group">
+        <label class="form-label">Inhalt (Blöcke)</label>
+        <div class="block-editor">
+          <div class="block-editor-toolbar">
+            <span class="block-editor-toolbar-label">Block hinzufügen:</span>
+            <button class="block-add-btn" onclick="addBlock('text')"><i class="fa-solid fa-align-left"></i> Text</button>
+            <button class="block-add-btn" onclick="addBlock('steps')"><i class="fa-solid fa-list-ol"></i> Schritte</button>
+            <button class="block-add-btn" onclick="addBlock('video')"><i class="fa-solid fa-circle-play"></i> Video</button>
+            <button class="block-add-btn" onclick="addBlock('image')"><i class="fa-solid fa-image"></i> Bild</button>
+            <button class="block-add-btn" onclick="addBlock('cta')"><i class="fa-solid fa-arrow-pointer"></i> Button</button>
+          </div>
+          <div class="block-list" id="blockList">
+            <div class="adm-empty" id="blockListEmpty"><i class="fa-solid fa-puzzle-piece"></i>Noch keine Blöcke. Füge oben einen Block hinzu.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('guideModal')">Abbrechen</button>
+      <button class="btn btn-primary" onclick="saveGuide()"><i class="fa-solid fa-floppy-disk"></i> Anleitung speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Category Modal -->
+<div class="adm-modal-overlay" id="catModal">
+  <div class="adm-modal" style="max-width:480px">
+    <div class="adm-modal-head">
+      <h3 id="catModalTitle">Kategorie hinzufügen</h3>
+      <button class="adm-modal-close" onclick="closeModal('catModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="catId">
+      <div class="form-group">
+        <label class="form-label">Name <span class="req">*</span></label>
+        <input type="text" class="form-control" id="catLabel" placeholder="z.B. Passwort">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">FontAwesome Icon <span class="req">*</span></label>
+          <input type="text" class="form-control" id="catIcon" placeholder="fa-key">
+          <div class="form-hint">Ohne „fa-solid", z.B. <code>fa-key</code>, <code>fa-phone</code></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Typ</label>
+          <select class="form-control" id="catType">
+            <option value="setup">Ersteinrichtung</option>
+            <option value="problem">Probleme</option>
+            <option value="general">Allgemein</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('catModal')">Abbrechen</button>
+      <button class="btn btn-primary" onclick="saveCat()"><i class="fa-solid fa-floppy-disk"></i> Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tool Modal -->
+<div class="adm-modal-overlay" id="toolModal">
+  <div class="adm-modal" style="max-width:520px">
+    <div class="adm-modal-head">
+      <h3 id="toolModalTitle">Tool hinzufügen</h3>
+      <button class="adm-modal-close" onclick="closeModal('toolModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="toolId">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Name <span class="req">*</span></label>
+          <input type="text" class="form-control" id="toolName" placeholder="z.B. Passbolt">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Icon</label>
+          <input type="text" class="form-control" id="toolIcon" value="fa-toolbox" placeholder="fa-key">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Beschreibung</label>
+        <textarea class="form-control" id="toolDesc" rows="2"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">URL <span class="req">*</span></label>
+        <input type="url" class="form-control" id="toolUrl" placeholder="https://...">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Hilfe-Button Text</label>
+          <input type="text" class="form-control" id="toolHelpLabel" placeholder="Brauchst du Hilfe?">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Hilfe-Anleitung ID</label>
+          <input type="text" class="form-control" id="toolHelpGuideId" placeholder="passbolt-guide">
+        </div>
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('toolModal')">Abbrechen</button>
+      <button class="btn btn-primary" onclick="saveTool()"><i class="fa-solid fa-floppy-disk"></i> Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Form Modal -->
+<div class="adm-modal-overlay" id="formModal">
+  <div class="adm-modal" style="max-width:480px">
+    <div class="adm-modal-head">
+      <h3 id="formModalTitle">Formular hinzufügen</h3>
+      <button class="adm-modal-close" onclick="closeModal('formModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="formId">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Name <span class="req">*</span></label>
+          <input type="text" class="form-control" id="formName">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Icon</label>
+          <input type="text" class="form-control" id="formIcon" value="fa-file-lines">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Beschreibung</label>
+        <textarea class="form-control" id="formDesc" rows="2"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">URL <span class="req">*</span></label>
+        <input type="url" class="form-control" id="formUrl">
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('formModal')">Abbrechen</button>
+      <button class="btn btn-primary" onclick="saveForm()"><i class="fa-solid fa-floppy-disk"></i> Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Link Modal -->
+<div class="adm-modal-overlay" id="linkModal">
+  <div class="adm-modal" style="max-width:440px">
+    <div class="adm-modal-head">
+      <h3 id="linkModalTitle">Link hinzufügen</h3>
+      <button class="adm-modal-close" onclick="closeModal('linkModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="linkId">
+      <div class="form-group">
+        <label class="form-label">Name <span class="req">*</span></label>
+        <input type="text" class="form-control" id="linkTitle">
+      </div>
+      <div class="form-group">
+        <label class="form-label">URL <span class="req">*</span></label>
+        <input type="url" class="form-control" id="linkUrl">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Icon</label>
+        <input type="text" class="form-control" id="linkIcon" value="fa-globe">
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('linkModal')">Abbrechen</button>
+      <button class="btn btn-primary" onclick="saveLink()"><i class="fa-solid fa-floppy-disk"></i> Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Team Modal -->
+<div class="adm-modal-overlay" id="teamModal">
+  <div class="adm-modal" style="max-width:480px">
+    <div class="adm-modal-head">
+      <h3 id="teamModalTitle">Mitglied hinzufügen</h3>
+      <button class="adm-modal-close" onclick="closeModal('teamModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="adm-modal-body">
+      <input type="hidden" id="teamId">
+      <div class="form-group">
+        <label class="form-label">Name <span class="req">*</span></label>
+        <input type="text" class="form-control" id="teamName">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Rolle</label>
+        <input type="text" class="form-control" id="teamRole" placeholder="z.B. IT Systemadministrator">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Foto-URL (optional)</label>
+        <input type="url" class="form-control" id="teamPhoto" placeholder="https://... oder leer lassen für Platzhalter">
+        <div class="form-hint">Direktlink zu einem Bild (JPG/PNG). SharePoint-Foto-URL funktioniert auch.</div>
+      </div>
+    </div>
+    <div class="adm-modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('teamModal')">Abbrechen</button>
+      <button class="btn btn-primary" onclick="saveTeam()"><i class="fa-solid fa-floppy-disk"></i> Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="adm-toast" id="admToast"></div>
+
+<script src="data.js"></script>
+<script>
+// ═══════════════════════════════════════════════════════
+//  HFU Admin – admin.js (inline)
+// ═══════════════════════════════════════════════════════
+
+let adminData = hfuLoadData();
+let currentBlocks = []; // Block-Editor-State
+
+// ── Navigation ────────────────────────────────────────
+const sectionTitles = {
+  secDashboard: 'Dashboard',
+  secNews: 'News verwalten',
+  secGuides: 'Anleitungen',
+  secGuideCategories: 'Kategorien',
+  secTools: 'Tools',
+  secForms: 'Formulare',
+  secLinks: 'Weitere Links',
+  secTeam: 'Team',
+  secSettings: 'Einstellungen'
+};
+
+function showSection(id, btn) {
+  document.querySelectorAll('.adm-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.adm-nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  document.getElementById('topbarTitle').textContent = sectionTitles[id] || id;
+
+  // Render entsprechender Tabelle
+  const renders = {
+    secDashboard: renderDashboard,
+    secNews: renderNewsTable,
+    secGuides: renderGuidesTable,
+    secGuideCategories: renderCatsTable,
+    secTools: renderToolsTable,
+    secForms: renderFormsTable,
+    secLinks: renderLinksTable,
+    secTeam: renderTeamTable
+  };
+  if (renders[id]) renders[id]();
+}
+
+// ── Modals ────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.adm-modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+});
+
+// ── Toast ─────────────────────────────────────────────
+let toastTimer;
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('admToast');
+  t.textContent = type === 'success' ? '✓ ' + msg : '✗ ' + msg;
+  t.className = 'adm-toast ' + type + ' show';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── Dashboard ─────────────────────────────────────────
+function renderDashboard() {
+  const stats = [
+    { icon: 'fa-newspaper', num: adminData.news?.length || 0, label: 'News-Meldungen' },
+    { icon: 'fa-book-open', num: adminData.guides?.length || 0, label: 'Anleitungen' },
+    { icon: 'fa-screwdriver-wrench', num: adminData.tools?.length || 0, label: 'Tools' },
+    { icon: 'fa-file-signature', num: adminData.forms?.length || 0, label: 'Formulare' },
+    { icon: 'fa-users', num: adminData.team?.length || 0, label: 'Team-Mitglieder' },
+    { icon: 'fa-tags', num: adminData.guideCategories?.length || 0, label: 'Kategorien' }
+  ];
+  document.getElementById('dashStats').innerHTML = stats.map(s => `
+    <div class="adm-stat-card">
+      <div class="adm-stat-icon"><i class="fa-solid ${s.icon}"></i></div>
+      <div class="adm-stat-num">${s.num}</div>
+      <div class="adm-stat-label">${s.label}</div>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// NEWS
+// ══════════════════════════════════════════════════════
+function renderNewsTable() {
+  const tbody = document.getElementById('newsTableBody');
+  const news = adminData.news || [];
+  if (!news.length) {
+    tbody.innerHTML = '<tr><td colspan="4"><div class="adm-empty"><i class="fa-solid fa-newspaper"></i>Keine Meldungen vorhanden.</div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = news.map(n => `
+    <tr>
+      <td><strong>${n.title}</strong><br><span style="font-size:11px;color:#999">${n.content?.slice(0,60)}…</span></td>
+      <td><span class="badge badge-${n.badge}">${n.badge}</span></td>
+      <td>${n.date || '–'}</td>
+      <td><div class="adm-table-actions">
+        <button class="btn btn-secondary btn-sm btn-icon" onclick="editNews('${n.id}')"><i class="fa-solid fa-pen"></i></button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteNews('${n.id}')"><i class="fa-solid fa-trash"></i></button>
+      </div></td>
+    </tr>
+  `).join('');
+}
+
+function openNewsModal(id = null) {
+  document.getElementById('newsId').value = '';
+  document.getElementById('newsModalTitle').textContent = 'News erstellen';
+  document.getElementById('newsTitle').value = '';
+  document.getElementById('newsBadge').value = 'Neu';
+  document.getElementById('newsDate').value = new Date().toLocaleDateString('de-DE');
+  document.getElementById('newsContent').value = '';
+  if (id) {
+    const n = adminData.news.find(x => x.id === id);
+    if (n) {
+      document.getElementById('newsId').value = n.id;
+      document.getElementById('newsModalTitle').textContent = 'News bearbeiten';
+      document.getElementById('newsTitle').value = n.title;
+      document.getElementById('newsBadge').value = n.badge;
+      document.getElementById('newsDate').value = n.date;
+      document.getElementById('newsContent').value = n.content;
+    }
+  }
+  openModal('newsModal');
+}
+
+function editNews(id) { openNewsModal(id); }
+
+function saveNews() {
+  const title = document.getElementById('newsTitle').value.trim();
+  const content = document.getElementById('newsContent').value.trim();
+  if (!title || !content) { showToast('Bitte Titel und Inhalt ausfüllen.', 'error'); return; }
+  const id = document.getElementById('newsId').value;
+  const d = {
+    title,
+    badge: document.getElementById('newsBadge').value,
+    date: document.getElementById('newsDate').value.trim() || new Date().toLocaleDateString('de-DE'),
+    content
+  };
+  if (id) { Object.assign(adminData.news.find(x => x.id === id) || {}, d); }
+  else { adminData.news.unshift({ id: hfuId('n'), ...d }); }
+  persist(); closeModal('newsModal'); renderNewsTable();
+  showToast('Meldung gespeichert!');
+}
+
+function deleteNews(id) {
+  if (!confirm('Meldung wirklich löschen?')) return;
+  adminData.news = adminData.news.filter(x => x.id !== id);
+  persist(); renderNewsTable(); showToast('Meldung gelöscht.');
+}
+
+// ══════════════════════════════════════════════════════
+// ANLEITUNGEN
+// ══════════════════════════════════════════════════════
+function renderGuidesTable() {
+  const tbody = document.getElementById('guidesTableBody');
+  const guides = adminData.guides || [];
+  if (!guides.length) {
+    tbody.innerHTML = '<tr><td colspan="4"><div class="adm-empty"><i class="fa-solid fa-book-open"></i>Noch keine Anleitungen.</div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = guides.map(g => {
+    const cat = (adminData.guideCategories || []).find(c => c.id === g.categoryId);
+    return `
+      <tr>
+        <td><strong>${g.title}</strong><br><span style="font-size:11px;color:#999">${g.desc?.slice(0,60) || ''}…</span></td>
+        <td>${cat ? `<span style="font-size:12px;display:flex;align-items:center;gap:5px"><i class="fa-solid ${cat.icon}" style="color:var(--sm-orange)"></i>${cat.label}</span>` : '–'}</td>
+        <td><span style="font-size:12px;background:#f0f0f0;padding:2px 8px;border-radius:3px">${(g.blocks || []).length} Blöcke</span></td>
+        <td><div class="adm-table-actions">
+          <button class="btn btn-secondary btn-sm btn-icon" onclick="editGuide('${g.id}')"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteGuide('${g.id}')"><i class="fa-solid fa-trash"></i></button>
+        </div></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function openGuideModal(id = null) {
+  currentBlocks = [];
+  document.getElementById('guideId').value = '';
+  document.getElementById('guideModalTitle').textContent = 'Neue Anleitung erstellen';
+  document.getElementById('guideTitle').value = '';
+  document.getElementById('guideDesc').value = '';
+
+  // Kategorie-Dropdown befüllen
+  const sel = document.getElementById('guideCategoryId');
+  sel.innerHTML = '<option value="">– Keine Kategorie –</option>' +
+    (adminData.guideCategories || []).map(c => `<option value="${c.id}">${c.label}</option>`).join('');
+
+  if (id) {
+    const g = (adminData.guides || []).find(x => x.id === id);
+    if (g) {
+      document.getElementById('guideId').value = g.id;
+      document.getElementById('guideModalTitle').textContent = 'Anleitung bearbeiten';
+      document.getElementById('guideTitle').value = g.title;
+      document.getElementById('guideDesc').value = g.desc || '';
+      document.getElementById('guideCategoryId').value = g.categoryId || '';
+      currentBlocks = JSON.parse(JSON.stringify(g.blocks || []));
+    }
+  }
+  renderBlockList();
+  openModal('guideModal');
+}
+
+function editGuide(id) { openGuideModal(id); }
+
+function saveGuide() {
+  const title = document.getElementById('guideTitle').value.trim();
+  if (!title) { showToast('Bitte einen Titel eingeben.', 'error'); return; }
+  const id = document.getElementById('guideId').value;
+  const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const d = {
+    title,
+    slug,
+    desc: document.getElementById('guideDesc').value.trim(),
+    categoryId: document.getElementById('guideCategoryId').value || '',
+    blocks: collectBlocks()
+  };
+  if (id) { Object.assign(adminData.guides.find(x => x.id === id) || {}, d); }
+  else { if (!adminData.guides) adminData.guides = []; adminData.guides.push({ id: hfuId('g'), ...d }); }
+  persist(); closeModal('guideModal'); renderGuidesTable();
+  showToast('Anleitung gespeichert!');
+}
+
+function deleteGuide(id) {
+  if (!confirm('Anleitung wirklich löschen?')) return;
+  adminData.guides = adminData.guides.filter(x => x.id !== id);
+  persist(); renderGuidesTable(); showToast('Anleitung gelöscht.');
+}
+
+// ── Block Editor ──────────────────────────────────────
+function addBlock(type) {
+  const defaults = {
+    text:  { type:'text',  heading:'', content:'' },
+    video: { type:'video', heading:'', url:'', content:'' },
+    image: { type:'image', heading:'', url:'', caption:'' },
+    steps: { type:'steps', heading:'', items:[] },
+    cta:   { type:'cta',   label:'Öffnen', url:'', icon:'fa-arrow-right' }
+  };
+  currentBlocks.push({ ...defaults[type], _id: hfuId('b') });
+  renderBlockList();
+}
+
+function removeBlock(idx) {
+  currentBlocks.splice(idx, 1);
+  renderBlockList();
+}
+
+function moveBlock(idx, dir) {
+  const to = idx + dir;
+  if (to < 0 || to >= currentBlocks.length) return;
+  [currentBlocks[idx], currentBlocks[to]] = [currentBlocks[to], currentBlocks[idx]];
+  renderBlockList();
+}
+
+function renderBlockList() {
+  const list = document.getElementById('blockList');
+  const empty = document.getElementById('blockListEmpty');
+  if (!currentBlocks.length) {
+    list.innerHTML = '<div class="adm-empty" id="blockListEmpty"><i class="fa-solid fa-puzzle-piece"></i>Noch keine Blöcke. Füge oben einen Block hinzu.</div>';
+    return;
+  }
+  const icons = { text:'fa-align-left', video:'fa-circle-play', image:'fa-image', steps:'fa-list-ol', cta:'fa-arrow-pointer' };
+  const labels = { text:'Text', video:'Video + Text', image:'Bild', steps:'Schritte-Liste', cta:'Button (CTA)' };
+
+  list.innerHTML = currentBlocks.map((block, i) => `
+    <div class="block-item" data-idx="${i}">
+      <div class="block-item-head">
+        <i class="fa-solid ${icons[block.type] || 'fa-cube'}"></i>
+        ${labels[block.type] || block.type}
+        <div class="block-item-actions">
+          <button class="block-move-btn" onclick="moveBlock(${i},-1)" ${i===0?'disabled':''} title="Nach oben"><i class="fa-solid fa-chevron-up"></i></button>
+          <button class="block-move-btn" onclick="moveBlock(${i},1)" ${i===currentBlocks.length-1?'disabled':''} title="Nach unten"><i class="fa-solid fa-chevron-down"></i></button>
+          <button class="block-del-btn" onclick="removeBlock(${i})" title="Löschen"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+      <div class="block-item-body">
+        ${renderBlockEditor(block, i)}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderBlockEditor(block, i) {
+  const headingField = `
+    <div class="form-group" style="margin-bottom:8px">
+      <label class="form-label" style="font-size:10px">Überschrift (optional)</label>
+      <input type="text" class="form-control" style="font-size:12px;padding:6px 10px" 
+             value="${esc(block.heading||'')}" oninput="currentBlocks[${i}].heading=this.value" placeholder="Abschnittstitel...">
+    </div>
+  `;
+
+  switch(block.type) {
+    case 'text': return headingField + `
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label" style="font-size:10px">Inhalt</label>
+        <textarea class="form-control" style="font-size:12px;min-height:80px" 
+                  oninput="currentBlocks[${i}].content=this.value" 
+                  placeholder="Text eingeben... (Zeilenumbrüche werden übernommen)">${esc(block.content||'')}</textarea>
+      </div>`;
+
+    case 'video': return headingField + `
+      <div class="form-group" style="margin-bottom:8px">
+        <label class="form-label" style="font-size:10px">Video-URL (YouTube, Stream oder direkter iframe-Link)</label>
+        <input type="url" class="form-control" style="font-size:12px;padding:6px 10px" 
+               value="${esc(block.url||'')}" oninput="currentBlocks[${i}].url=this.value" 
+               placeholder="https://youtube.com/watch?v=... oder https://web.microsoftstream.com/video/...">
+        <div class="form-hint">YouTube und Microsoft Stream werden automatisch erkannt und eingebettet.</div>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label" style="font-size:10px">Text neben dem Video</label>
+        <textarea class="form-control" style="font-size:12px;min-height:80px" 
+                  oninput="currentBlocks[${i}].content=this.value" 
+                  placeholder="Erklärender Text neben dem Video...">${esc(block.content||'')}</textarea>
+      </div>`;
+
+    case 'image': return headingField + `
+      <div class="form-group" style="margin-bottom:8px">
+        <label class="form-label" style="font-size:10px">Bild-URL</label>
+        <input type="url" class="form-control" style="font-size:12px;padding:6px 10px" 
+               value="${esc(block.url||'')}" oninput="currentBlocks[${i}].url=this.value" 
+               placeholder="https://... (URL zu einem Bild)">
+        <div class="form-hint">Direktlink zu einem Bild (JPG, PNG, GIF). SharePoint-Bild-URLs funktionieren auch.</div>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label" style="font-size:10px">Bildunterschrift (optional)</label>
+        <input type="text" class="form-control" style="font-size:12px;padding:6px 10px" 
+               value="${esc(block.caption||'')}" oninput="currentBlocks[${i}].caption=this.value" placeholder="Bildunterschrift...">
+      </div>`;
+
+    case 'steps': return headingField + `
+      <label class="form-label" style="font-size:10px">Schritte</label>
+      <div class="steps-list-editor" id="stepsEditor_${i}">
+        ${(block.items||[]).map((item, si) => renderStepEditor(i, si, item)).join('')}
+      </div>
+      <button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="addStep(${i})">
+        <i class="fa-solid fa-plus"></i> Schritt hinzufügen
+      </button>`;
+
+    case 'cta': return `
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label" style="font-size:10px">Button-Text</label>
+          <input type="text" class="form-control" style="font-size:12px;padding:6px 10px" 
+                 value="${esc(block.label||'')}" oninput="currentBlocks[${i}].label=this.value" placeholder="Öffnen">
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label" style="font-size:10px">Icon</label>
+          <input type="text" class="form-control" style="font-size:12px;padding:6px 10px" 
+                 value="${esc(block.icon||'fa-arrow-right')}" oninput="currentBlocks[${i}].icon=this.value" placeholder="fa-arrow-right">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:0;margin-top:8px">
+        <label class="form-label" style="font-size:10px">Ziel-URL</label>
+        <input type="url" class="form-control" style="font-size:12px;padding:6px 10px" 
+               value="${esc(block.url||'')}" oninput="currentBlocks[${i}].url=this.value" placeholder="https://...">
+      </div>`;
+
+    default: return `<p style="color:#999;font-size:12px">Unbekannter Block-Typ: ${block.type}</p>`;
+  }
+}
+
+function renderStepEditor(blockIdx, stepIdx, item) {
+  return `
+    <div class="step-editor-row" id="step_${blockIdx}_${stepIdx}">
+      <div class="step-editor-num">${stepIdx + 1}</div>
+      <div class="step-editor-fields">
+        <input type="text" class="form-control" style="font-size:12px;padding:5px 8px"
+               value="${esc(item.text||'')}" oninput="currentBlocks[${blockIdx}].items[${stepIdx}].text=this.value"
+               placeholder="Schritt-Beschreibung...">
+        <div style="display:flex;gap:6px;margin-top:4px">
+          <input type="text" class="form-control" style="font-size:11px;padding:4px 8px;flex:1"
+                 value="${esc(item.link?.label||'')}" oninput="ensureStepLink(${blockIdx},${stepIdx});currentBlocks[${blockIdx}].items[${stepIdx}].link.label=this.value"
+                 placeholder="Link-Text (optional)">
+          <input type="url" class="form-control" style="font-size:11px;padding:4px 8px;flex:2"
+                 value="${esc(item.link?.url||'')}" oninput="ensureStepLink(${blockIdx},${stepIdx});currentBlocks[${blockIdx}].items[${stepIdx}].link.url=this.value"
+                 placeholder="Link-URL (optional)">
+        </div>
+      </div>
+      <button class="step-del-btn" onclick="removeStep(${blockIdx},${stepIdx})" title="Löschen"><i class="fa-solid fa-times"></i></button>
+    </div>
+  `;
+}
+
+function ensureStepLink(bi, si) {
+  if (!currentBlocks[bi].items[si].link) currentBlocks[bi].items[si].link = { label:'', url:'' };
+}
+
+function addStep(blockIdx) {
+  if (!currentBlocks[blockIdx].items) currentBlocks[blockIdx].items = [];
+  currentBlocks[blockIdx].items.push({ text: '', link: null });
+  renderBlockList();
+}
+
+function removeStep(blockIdx, stepIdx) {
+  currentBlocks[blockIdx].items.splice(stepIdx, 1);
+  renderBlockList();
+}
+
+function collectBlocks() {
+  // Blocks sind bereits in currentBlocks gepflegt via oninput
+  return JSON.parse(JSON.stringify(currentBlocks));
+}
+
+// ══════════════════════════════════════════════════════
+// KATEGORIEN
+// ══════════════════════════════════════════════════════
+function renderCatsTable() {
+  const tbody = document.getElementById('catsTableBody');
+  const cats = adminData.guideCategories || [];
+  if (!cats.length) {
+    tbody.innerHTML = '<tr><td colspan="4"><div class="adm-empty">Keine Kategorien.</div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = cats.map(c => `
+    <tr>
+      <td><i class="fa-solid ${c.icon}" style="color:var(--sm-orange);font-size:18px"></i></td>
+      <td><strong>${c.label}</strong></td>
+      <td>${c.type}</td>
+      <td><div class="adm-table-actions">
+        <button class="btn btn-secondary btn-sm btn-icon" onclick="editCat('${c.id}')"><i class="fa-solid fa-pen"></i></button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteCat('${c.id}')"><i class="fa-solid fa-trash"></i></button>
+      </div></td>
+    </tr>
+  `).join('');
+}
+
+function openCatModal(id = null) {
+  document.getElementById('catId').value = '';
+  document.getElementById('catLabel').value = '';
+  document.getElementById('catIcon').value = 'fa-circle';
+  document.getElementById('catType').value = 'general';
+  document.getElementById('catModalTitle').textContent = 'Kategorie hinzufügen';
+  if (id) {
+    const c = (adminData.guideCategories || []).find(x => x.id === id);
+    if (c) {
+      document.getElementById('catId').value = c.id;
+      document.getElementById('catLabel').value = c.label;
+      document.getElementById('catIcon').value = c.icon;
+      document.getElementById('catType').value = c.type;
+      document.getElementById('catModalTitle').textContent = 'Kategorie bearbeiten';
+    }
+  }
+  openModal('catModal');
+}
+
+function editCat(id) { openCatModal(id); }
+
+function saveCat() {
+  const label = document.getElementById('catLabel').value.trim();
+  if (!label) { showToast('Name eingeben.', 'error'); return; }
+  const id = document.getElementById('catId').value;
+  const d = {
+    label,
+    icon: document.getElementById('catIcon').value.trim() || 'fa-circle',
+    type: document.getElementById('catType').value
+  };
+  if (!adminData.guideCategories) adminData.guideCategories = [];
+  if (id) { Object.assign(adminData.guideCategories.find(x => x.id === id) || {}, d); }
+  else { adminData.guideCategories.push({ id: hfuId('cat'), ...d }); }
+  persist(); closeModal('catModal'); renderCatsTable(); showToast('Kategorie gespeichert!');
+}
+
+function deleteCat(id) {
+  if (!confirm('Kategorie löschen?')) return;
+  adminData.guideCategories = adminData.guideCategories.filter(x => x.id !== id);
+  persist(); renderCatsTable(); showToast('Kategorie gelöscht.');
+}
+
+// ══════════════════════════════════════════════════════
+// TOOLS
+// ══════════════════════════════════════════════════════
+function renderToolsTable() {
+  const tbody = document.getElementById('toolsTableBody');
+  const tools = adminData.tools || [];
+  if (!tools.length) { tbody.innerHTML = '<tr><td colspan="3"><div class="adm-empty">Keine Tools.</div></td></tr>'; return; }
+  tbody.innerHTML = tools.map(t => `
+    <tr>
+      <td><i class="fa-solid ${t.icon}" style="color:var(--sm-orange);margin-right:8px"></i><strong>${t.title}</strong></td>
+      <td><a href="${t.url}" target="_blank" style="font-size:12px;color:var(--sm-text-3)">${t.url?.slice(0,40)}…</a></td>
+      <td><div class="adm-table-actions">
+        <button class="btn btn-secondary btn-sm btn-icon" onclick="editTool('${t.id}')"><i class="fa-solid fa-pen"></i></button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteTool('${t.id}')"><i class="fa-solid fa-trash"></i></button>
+      </div></td>
+    </tr>
+  `).join('');
+}
+
+function openToolModal(id = null) {
+  document.getElementById('toolId').value = '';
+  ['toolName','toolDesc','toolUrl','toolHelpLabel','toolHelpGuideId'].forEach(f => document.getElementById(f).value = '');
+  document.getElementById('toolIcon').value = 'fa-toolbox';
+  document.getElementById('toolModalTitle').textContent = 'Tool hinzufügen';
+  if (id) {
+    const t = (adminData.tools || []).find(x => x.id === id);
+    if (t) {
+      document.getElementById('toolId').value = t.id;
+      document.getElementById('toolModalTitle').textContent = 'Tool bearbeiten';
+      document.getElementById('toolName').value = t.title;
+      document.getElementById('toolIcon').value = t.icon || 'fa-toolbox';
+      document.getElementById('toolDesc').value = t.desc || '';
+      document.getElementById('toolUrl').value = t.url || '';
+      document.getElementById('toolHelpLabel').value = t.helpLabel || '';
+      document.getElementById('toolHelpGuideId').value = t.helpGuideId || '';
+    }
+  }
+  openModal('toolModal');
+}
+
+function editTool(id) { openToolModal(id); }
+
+function saveTool() {
+  const title = document.getElementById('toolName').value.trim();
+  const url = document.getElementById('toolUrl').value.trim();
+  if (!title || !url) { showToast('Name und URL sind Pflichtfelder.', 'error'); return; }
+  const id = document.getElementById('toolId').value;
+  const d = { title, icon: document.getElementById('toolIcon').value.trim() || 'fa-toolbox',
+    desc: document.getElementById('toolDesc').value.trim(), url,
+    helpLabel: document.getElementById('toolHelpLabel').value.trim(),
+    helpGuideId: document.getElementById('toolHelpGuideId').value.trim() };
+  if (!adminData.tools) adminData.tools = [];
+  if (id) { Object.assign(adminData.tools.find(x => x.id === id) || {}, d); }
+  else { adminData.tools.push({ id: hfuId('t'), ...d }); }
+  persist(); closeModal('toolModal'); renderToolsTable(); showToast('Tool gespeichert!');
+}
+
+function deleteTool(id) {
+  if (!confirm('Tool löschen?')) return;
+  adminData.tools = adminData.tools.filter(x => x.id !== id);
+  persist(); renderToolsTable(); showToast('Tool gelöscht.');
+}
+
+// ══════════════════════════════════════════════════════
+// FORMULARE
+// ══════════════════════════════════════════════════════
+function renderFormsTable() {
+  const tbody = document.getElementById('formsTableBody');
+  const forms = adminData.forms || [];
+  if (!forms.length) { tbody.innerHTML = '<tr><td colspan="3"><div class="adm-empty">Keine Formulare.</div></td></tr>'; return; }
+  tbody.innerHTML = forms.map(f => `
+    <tr>
+      <td><i class="fa-solid ${f.icon}" style="color:var(--sm-orange);margin-right:8px"></i><strong>${f.title}</strong></td>
+      <td><a href="${f.url}" target="_blank" style="font-size:12px;color:var(--sm-text-3)">${f.url?.slice(0,40)}…</a></td>
+      <td><div class="adm-table-actions">
+        <button class="btn btn-secondary btn-sm btn-icon" onclick="editForm('${f.id}')"><i class="fa-solid fa-pen"></i></button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteForm('${f.id}')"><i class="fa-solid fa-trash"></i></button>
+      </div></td>
+    </tr>
+  `).join('');
+}
+
+function openFormModal(id = null) {
+  document.getElementById('formId').value = '';
+  ['formName','formDesc','formUrl'].forEach(f => document.getElementById(f).value = '');
+  document.getElementById('formIcon').value = 'fa-file-lines';
+  document.getElementById('formModalTitle').textContent = 'Formular hinzufügen';
+  if (id) {
+    const f = (adminData.forms || []).find(x => x.id === id);
+    if (f) {
+      document.getElementById('formId').value = f.id;
+      document.getElementById('formModalTitle').textContent = 'Formular bearbeiten';
+      document.getElementById('formName').value = f.title;
+      document.getElementById('formIcon').value = f.icon || 'fa-file-lines';
+      document.getElementById('formDesc').value = f.desc || '';
+      document.getElementById('formUrl').value = f.url || '';
+    }
+  }
+  openModal('formModal');
+}
+
+function editForm(id) { openFormModal(id); }
+
+function saveForm() {
+  const title = document.getElementById('formName').value.trim();
+  const url = document.getElementById('formUrl').value.trim();
+  if (!title || !url) { showToast('Name und URL sind Pflichtfelder.', 'error'); return; }
+  const id = document.getElementById('formId').value;
+  const d = { title, icon: document.getElementById('formIcon').value.trim() || 'fa-file-lines',
+    desc: document.getElementById('formDesc').value.trim(), url };
+  if (!adminData.forms) adminData.forms = [];
+  if (id) { Object.assign(adminData.forms.find(x => x.id === id) || {}, d); }
+  else { adminData.forms.push({ id: hfuId('f'), ...d }); }
+  persist(); closeModal('formModal'); renderFormsTable(); showToast('Formular gespeichert!');
+}
+
+function deleteForm(id) {
+  if (!confirm('Formular löschen?')) return;
+  adminData.forms = adminData.forms.filter(x => x.id !== id);
+  persist(); renderFormsTable(); showToast('Formular gelöscht.');
+}
+
+// ══════════════════════════════════════════════════════
+// LINKS
+// ══════════════════════════════════════════════════════
+function renderLinksTable() {
+  const tbody = document.getElementById('linksTableBody');
+  const links = adminData.furtherLinks || [];
+  if (!links.length) { tbody.innerHTML = '<tr><td colspan="3"><div class="adm-empty">Keine Links.</div></td></tr>'; return; }
+  tbody.innerHTML = links.map(l => `
+    <tr>
+      <td><i class="fa-solid ${l.icon}" style="color:var(--sm-orange);margin-right:8px"></i><strong>${l.title}</strong></td>
+      <td><a href="${l.url}" target="_blank" style="font-size:12px;color:var(--sm-text-3)">${l.url?.slice(0,40)}…</a></td>
+      <td><div class="adm-table-actions">
+        <button class="btn btn-secondary btn-sm btn-icon" onclick="editLink('${l.id}')"><i class="fa-solid fa-pen"></i></button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteLink('${l.id}')"><i class="fa-solid fa-trash"></i></button>
+      </div></td>
+    </tr>
+  `).join('');
+}
+
+function openLinkModal(id = null) {
+  document.getElementById('linkId').value = '';
+  ['linkTitle','linkUrl'].forEach(f => document.getElementById(f).value = '');
+  document.getElementById('linkIcon').value = 'fa-globe';
+  document.getElementById('linkModalTitle').textContent = 'Link hinzufügen';
+  if (id) {
+    const l = (adminData.furtherLinks || []).find(x => x.id === id);
+    if (l) {
+      document.getElementById('linkId').value = l.id;
+      document.getElementById('linkModalTitle').textContent = 'Link bearbeiten';
+      document.getElementById('linkTitle').value = l.title;
+      document.getElementById('linkUrl').value = l.url;
+      document.getElementById('linkIcon').value = l.icon || 'fa-globe';
+    }
+  }
+  openModal('linkModal');
+}
+
+function editLink(id) { openLinkModal(id); }
+
+function saveLink() {
+  const title = document.getElementById('linkTitle').value.trim();
+  const url = document.getElementById('linkUrl').value.trim();
+  if (!title || !url) { showToast('Name und URL sind Pflichtfelder.', 'error'); return; }
+  const id = document.getElementById('linkId').value;
+  const d = { title, url, icon: document.getElementById('linkIcon').value.trim() || 'fa-globe' };
+  if (!adminData.furtherLinks) adminData.furtherLinks = [];
+  if (id) { Object.assign(adminData.furtherLinks.find(x => x.id === id) || {}, d); }
+  else { adminData.furtherLinks.push({ id: hfuId('l'), ...d }); }
+  persist(); closeModal('linkModal'); renderLinksTable(); showToast('Link gespeichert!');
+}
+
+function deleteLink(id) {
+  if (!confirm('Link löschen?')) return;
+  adminData.furtherLinks = adminData.furtherLinks.filter(x => x.id !== id);
+  persist(); renderLinksTable(); showToast('Link gelöscht.');
+}
+
+// ══════════════════════════════════════════════════════
+// TEAM
+// ══════════════════════════════════════════════════════
+function renderTeamTable() {
+  const tbody = document.getElementById('teamTableBody');
+  const team = adminData.team || [];
+  if (!team.length) { tbody.innerHTML = '<tr><td colspan="4"><div class="adm-empty">Keine Mitglieder.</div></td></tr>'; return; }
+  tbody.innerHTML = team.map(m => `
+    <tr>
+      <td><strong>${m.name}</strong></td>
+      <td>${m.role || '–'}</td>
+      <td>${m.photo ? `<img src="${m.photo}" style="height:32px;width:32px;object-fit:cover;border-radius:50%">` : '<i class="fa-solid fa-user" style="color:#ccc"></i>'}</td>
+      <td><div class="adm-table-actions">
+        <button class="btn btn-secondary btn-sm btn-icon" onclick="editTeam('${m.id}')"><i class="fa-solid fa-pen"></i></button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteTeam('${m.id}')"><i class="fa-solid fa-trash"></i></button>
+      </div></td>
+    </tr>
+  `).join('');
+}
+
+function openTeamModal(id = null) {
+  document.getElementById('teamId').value = '';
+  ['teamName','teamRole','teamPhoto'].forEach(f => document.getElementById(f).value = '');
+  document.getElementById('teamModalTitle').textContent = 'Mitglied hinzufügen';
+  if (id) {
+    const m = (adminData.team || []).find(x => x.id === id);
+    if (m) {
+      document.getElementById('teamId').value = m.id;
+      document.getElementById('teamModalTitle').textContent = 'Mitglied bearbeiten';
+      document.getElementById('teamName').value = m.name;
+      document.getElementById('teamRole').value = m.role || '';
+      document.getElementById('teamPhoto').value = m.photo || '';
+    }
+  }
+  openModal('teamModal');
+}
+
+function editTeam(id) { openTeamModal(id); }
+
+function saveTeam() {
+  const name = document.getElementById('teamName').value.trim();
+  if (!name) { showToast('Name eingeben.', 'error'); return; }
+  const id = document.getElementById('teamId').value;
+  const d = { name, role: document.getElementById('teamRole').value.trim(), photo: document.getElementById('teamPhoto').value.trim() };
+  if (!adminData.team) adminData.team = [];
+  if (id) { Object.assign(adminData.team.find(x => x.id === id) || {}, d); }
+  else { adminData.team.push({ id: hfuId('tm'), ...d }); }
+  persist(); closeModal('teamModal'); renderTeamTable(); showToast('Gespeichert!');
+}
+
+function deleteTeam(id) {
+  if (!confirm('Mitglied löschen?')) return;
+  adminData.team = adminData.team.filter(x => x.id !== id);
+  persist(); renderTeamTable(); showToast('Gelöscht.');
+}
+
+// ══════════════════════════════════════════════════════
+// DATEN
+// ══════════════════════════════════════════════════════
+function persist() { hfuSaveData(adminData); }
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(adminData, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'hfu-data-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  showToast('Daten exportiert!');
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data.news && !data.guides) throw new Error('Ungültiges Format');
+      adminData = data;
+      persist();
+      renderDashboard();
+      showToast('Daten erfolgreich importiert!');
+    } catch(err) {
+      showToast('Fehler beim Importieren: ' + err.message, 'error');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function resetData() {
+  if (!confirm('Wirklich alle Daten auf Standard zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden!')) return;
+  adminData = hfuResetData();
+  persist();
+  renderDashboard();
+  showToast('Daten zurückgesetzt.');
+}
+
+// ── Hilfsfunktionen ───────────────────────────────────
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Passwort & Authentifizierung ───────────────────────
+const PWD_SALT = "hfu_salt_2026";
+const DEFAULT_PWD_HASH = "f61cb60be8e0ee367d4bd40c1a8bace679f653f831821d2cc506f3191cd0ff44"; // Start-123
+const PWD_STORAGE_KEY = "hfu_admin_pwd_hash";
+const AUTH_SESSION_KEY = "hfu_admin_auth";
+
+async function hashPassword(pwd) {
+  const enc = new TextEncoder().encode(PWD_SALT + pwd);
+  const buf = await crypto.subtle.digest("SHA-256", enc);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function getStoredHash() {
+  return localStorage.getItem(PWD_STORAGE_KEY) || DEFAULT_PWD_HASH;
+}
+
+function checkAuth() {
+  const isAuth = sessionStorage.getItem(AUTH_SESSION_KEY) === 'true';
+  const overlay = document.getElementById('admLoginOverlay');
+  if (isAuth) {
+    if (overlay) overlay.style.display = 'none';
+  } else {
+    if (overlay) {
+      overlay.style.display = 'flex';
+      setTimeout(() => document.getElementById('adminLoginInput')?.focus(), 150);
+    }
+  }
+}
+
+async function doAdminLogin(e) {
+  if (e) e.preventDefault();
+  const input = document.getElementById('adminLoginInput');
+  const val = input.value;
+  const err = document.getElementById('adminLoginError');
+  if (!val) return;
+  const enteredHash = await hashPassword(val);
+  if (enteredHash === getStoredHash()) {
+    sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
+    if (err) err.style.display = 'none';
+    input.value = '';
+    checkAuth();
+    showToast('Erfolgreich angemeldet!');
+  } else {
+    if (err) {
+      err.textContent = 'Falsches Passwort! Bitte erneut versuchen.';
+      err.style.display = 'block';
+    }
+    input.classList.add('shake');
+    setTimeout(() => input.classList.remove('shake'), 450);
+    input.select();
+  }
+}
+
+function toggleLoginPwdVisibility() {
+  const input = document.getElementById('adminLoginInput');
+  const icon = document.getElementById('loginEyeIcon');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.className = 'fa-solid fa-eye-slash';
+  } else {
+    input.type = 'password';
+    icon.className = 'fa-solid fa-eye';
+  }
+}
+
+function logoutAdmin() {
+  sessionStorage.removeItem(AUTH_SESSION_KEY);
+  checkAuth();
+  showToast('Erfolgreich abgemeldet.');
+}
+
+async function changeAdminPassword() {
+  const curr = document.getElementById('pwdCurrent').value;
+  const next = document.getElementById('pwdNew').value;
+  const confirm = document.getElementById('pwdConfirm').value;
+
+  if (!curr || !next || !confirm) {
+    showToast('Bitte alle Felder ausfüllen.', 'error');
+    return;
+  }
+  const currHash = await hashPassword(curr);
+  if (currHash !== getStoredHash()) {
+    showToast('Das bisherige Passwort ist leider nicht korrekt!', 'error');
+    return;
+  }
+  if (next.length < 6) {
+    showToast('Das neue Passwort muss mindestens 6 Zeichen lang sein.', 'error');
+    return;
+  }
+  if (next !== confirm) {
+    showToast('Die neuen Passwörter stimmen nicht überein!', 'error');
+    return;
+  }
+  const newHash = await hashPassword(next);
+  localStorage.setItem(PWD_STORAGE_KEY, newHash);
+  document.getElementById('pwdCurrent').value = '';
+  document.getElementById('pwdNew').value = '';
+  document.getElementById('pwdConfirm').value = '';
+  showToast('Admin-Passwort erfolgreich geändert!');
+}
+
+// ── Init ──────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  checkAuth();
+  adminData = hfuLoadData();
+  renderDashboard();
+});
+</script>
+</body>
+</html>
