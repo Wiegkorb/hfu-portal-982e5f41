@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <title>HFU IT-Support</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="hfu-root" id="hfuRoot">
+
+  <!-- ═══ LANDINGPAGE ══════════════════════════════════ -->
+  <div id="pageLanding" class="hfu-page active">
+
+    <!-- Hero Header -->
+    <div class="hfu-hero">
+      <div class="hfu-hero-left">
+        <h1 class="hfu-hero-title">IT-Support, <span class="hfu-orange">ohne Umwege</span></h1>
+        <p class="hfu-hero-desc">Kurzanleitungen, wichtige Systeme und schnelle Hilfe an einem Ort. Wenn du direkt Unterstützung brauchst, erreichst du die HFU telefonisch oder per E-Mail.</p>
+        <div class="hfu-hero-btns">
+          <a href="tel:+499197628272" class="hfu-btn-outline"><i class="fa-solid fa-phone"></i> HFU anrufen</a>
+          <a href="mailto:hilfe@schmetterling.de" class="hfu-btn-outline"><i class="fa-solid fa-envelope"></i> E-Mail schreiben</a>
+        </div>
+        <p class="hfu-hero-hours"><i class="fa-regular fa-clock"></i> Mo–Fr: 08:00–19:00 &nbsp;|&nbsp; +49 9197 6282-720 &nbsp;|&nbsp; <a href="mailto:hilfe@schmetterling.de" class="hfu-link">hilfe@schmetterling.de</a></p>
+      </div>
+      <div class="hfu-hero-right">
+        <div class="hfu-news-card">
+          <div class="hfu-news-header">
+            <span class="hfu-news-label"><i class="fa-solid fa-newspaper"></i> News</span>
+            <span class="hfu-news-count" id="newsCount"></span>
+          </div>
+          <div id="newsList" class="hfu-news-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 Kategorie-Kacheln -->
+    <div class="hfu-section-label">Schnellzugriff</div>
+    <div class="hfu-cards-grid">
+      <div class="hfu-hero-card" onclick="navigate('pageTools')">
+        <div class="hfu-hero-card-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+        <div class="hfu-hero-card-body">
+          <div class="hfu-hero-card-title">Tools</div>
+          <div class="hfu-hero-card-desc">Entdecke Werkzeuge wie Passbolt und Self-Service-Optionen für deine Zugangsdaten.</div>
+          <button class="hfu-btn-card">Mehr erfahren <i class="fa-solid fa-arrow-right fa-xs"></i></button>
+        </div>
+        <div class="hfu-hero-card-bgicon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+      </div>
+
+      <div class="hfu-hero-card" onclick="navigate('pageForms')">
+        <div class="hfu-hero-card-icon"><i class="fa-solid fa-file-signature"></i></div>
+        <div class="hfu-hero-card-body">
+          <div class="hfu-hero-card-title">Formulare</div>
+          <div class="hfu-hero-card-desc">Bestellung von IT-Equipment (Hard- und Software) und Beantragung von Auslandsfreigaben.</div>
+          <button class="hfu-btn-card">Mehr erfahren <i class="fa-solid fa-arrow-right fa-xs"></i></button>
+        </div>
+        <div class="hfu-hero-card-bgicon"><i class="fa-solid fa-file-signature"></i></div>
+      </div>
+
+      <div class="hfu-hero-card" onclick="navigate('pageGuides')">
+        <div class="hfu-hero-card-icon"><i class="fa-solid fa-book-open"></i></div>
+        <div class="hfu-hero-card-body">
+          <div class="hfu-hero-card-title">Anleitungen</div>
+          <div class="hfu-hero-card-desc">Egal ob Tool-Einrichtung oder Headset-Probleme: Hier findest du passende Schritt-für-Schritt-Anleitungen.</div>
+          <button class="hfu-btn-card">Mehr erfahren <i class="fa-solid fa-arrow-right fa-xs"></i></button>
+        </div>
+        <div class="hfu-hero-card-bgicon"><i class="fa-solid fa-book-open"></i></div>
+      </div>
+    </div>
+
+    <!-- Team -->
+    <div class="hfu-section-label" style="margin-top:32px">Dein IT-Team</div>
+    <div class="hfu-team-grid" id="teamGrid"></div>
+  </div>
+
+  <!-- ═══ TOOLS-SEITE ══════════════════════════════════ -->
+  <div id="pageTools" class="hfu-page">
+    <div class="hfu-page-header">
+      <button class="hfu-back-btn" onclick="navigate('pageLanding')"><i class="fa-solid fa-chevron-left"></i> Zurück</button>
+      <h2 class="hfu-page-title">Tools</h2>
+    </div>
+    <div class="hfu-items-grid" id="toolsGrid"></div>
+
+    <div class="hfu-further-links-section">
+      <div class="hfu-section-label">Weitere Links</div>
+      <div class="hfu-further-links-grid" id="furtherLinksGrid"></div>
+    </div>
+  </div>
+
+  <!-- ═══ FORMULARE-SEITE ══════════════════════════════ -->
+  <div id="pageForms" class="hfu-page">
+    <div class="hfu-page-header">
+      <button class="hfu-back-btn" onclick="navigate('pageLanding')"><i class="fa-solid fa-chevron-left"></i> Zurück</button>
+      <h2 class="hfu-page-title">Formulare</h2>
+    </div>
+    <div class="hfu-items-grid" id="formsGrid"></div>
+  </div>
+
+  <!-- ═══ ANLEITUNGEN-ÜBERSICHT ════════════════════════ -->
+  <div id="pageGuides" class="hfu-page">
+    <div class="hfu-page-header">
+      <button class="hfu-back-btn" onclick="navigate('pageLanding')"><i class="fa-solid fa-chevron-left"></i> Zurück</button>
+      <h2 class="hfu-page-title">Anleitungen</h2>
+    </div>
+
+    <!-- Suchleiste -->
+    <div class="hfu-search-box">
+      <i class="fa-solid fa-magnifying-glass hfu-search-icon"></i>
+      <div>
+        <div class="hfu-search-label">Wobei brauchst du Hilfe?</div>
+        <input type="text" class="hfu-search-input" id="guideSearch" placeholder="VPN, Passwort, Outlook, Drucker ..." oninput="filterGuides()">
+      </div>
+    </div>
+
+    <!-- Kategorie-Tabs -->
+    <div class="hfu-guide-tabs" id="guideTabs"></div>
+
+    <!-- Anleitungs-Karten (Übersicht) -->
+    <div class="hfu-guide-overview-grid" id="guideOverviewGrid"></div>
+  </div>
+
+  <!-- ═══ ANLEITUNG DETAIL ══════════════════════════════ -->
+  <div id="pageGuideDetail" class="hfu-page">
+    <div class="hfu-page-header">
+      <button class="hfu-back-btn" id="guideBackBtn" onclick="navigate('pageGuides')"><i class="fa-solid fa-chevron-left"></i> Alle Anleitungen</button>
+      <h2 class="hfu-page-title" id="guideDetailTitle"></h2>
+    </div>
+
+    <!-- Kategorie-Tabs (auch auf Detailseite) -->
+    <div class="hfu-guide-tabs" id="guideDetailTabs"></div>
+
+    <!-- Inhalt der Anleitung -->
+    <div id="guideDetailContent" class="hfu-guide-detail-content"></div>
+
+    <!-- IT kontaktieren -->
+    <div class="hfu-contact-box">
+      <div class="hfu-contact-title">IT kontaktieren</div>
+      <div class="hfu-contact-sub">Wenn das Problem weiterhin besteht, erreichst du uns direkt per E-Mail oder telefonisch.</div>
+      <div class="hfu-contact-btns">
+        <a href="mailto:hilfe@schmetterling.de" class="hfu-btn-contact-email"><i class="fa-solid fa-envelope"></i> E-Mail schreiben</a>
+        <a href="tel:+499197628272" class="hfu-btn-contact-phone"><i class="fa-solid fa-phone"></i> HFU anrufen</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /hfu-root -->
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
